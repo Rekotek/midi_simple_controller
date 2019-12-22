@@ -1,14 +1,18 @@
+#define USE_ROTARY_ENCODER
 #include <MIDI_Controller.h>
 HairlessMIDI_Interface midiInterface;
 
 #define INFO_LED 50
 #define CONTROL_BTN 12
+#define ENCODER_A 18
+#define ENCODER_B 19
 
 // Note number 60 is defined as middle C in the MIDI specification
 
 const uint8_t CC_Unspec = 14;
+const uint8_t CC_Encoder = 15;
 
-int led_status = HIGH;
+int led_status = LOW;
 int current_bank_number = 0;
 
 Digital buttons[] = {
@@ -24,6 +28,8 @@ Analog analogs[] = {
   {A0, MIDI_CC::Expression_Controller, 1},
   {A1, CC_Unspec, 1}
 };
+
+RotaryEncoder encoder(ENCODER_A, ENCODER_B, CC_Encoder, 1, 1, NORMAL_ENCODER, TWOS_COMPLEMENT);
 
 Bank bank(12);
 
