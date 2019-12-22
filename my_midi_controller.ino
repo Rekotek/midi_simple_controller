@@ -3,33 +3,38 @@
 HairlessMIDI_Interface midiInterface;
 
 #define INFO_LED 50
+
 #define CONTROL_BTN 12
+
 #define ENCODER_A 18
 #define ENCODER_B 19
 
-// Note number 60 is defined as middle C in the MIDI specification
+#define MAIN_CHANNEL 1
+#define ROOT_KEY 12 // C-1
+                    // Note number 60 is defined as middle C in the MIDI specification
 
-const uint8_t CC_Unspec = 14;
-const uint8_t CC_Encoder = 15;
+#define CC_UNSPEC_1 14
+#define CC_ENCODER_1 15
 
 int led_status = LOW;
 int current_bank_number = 0;
 
 Digital buttons[] = {
-  {2, 12, 1}, // C-1
-  {3, 13, 1},
-  {4, 14, 1},
-  {5, 15, 1},
-  {6, 16, 1},
-  {7, 17, 1}  
+  {2, ROOT_KEY, MAIN_CHANNEL},
+  {3, ROOT_KEY + 1, MAIN_CHANNEL},
+  {4, ROOT_KEY + 2, MAIN_CHANNEL},
+  {5, ROOT_KEY + 3, MAIN_CHANNEL},
+  {6, ROOT_KEY + 4, MAIN_CHANNEL},
+  {7, ROOT_KEY + 5, MAIN_CHANNEL}  
 };
 
 Analog analogs[] = {
-  {A0, MIDI_CC::Expression_Controller, 1},
-  {A1, CC_Unspec, 1}
+  {A0, MIDI_CC::Expression_Controller, MAIN_CHANNEL},
+  {A1, CC_UNSPEC_1, MAIN_CHANNEL}
 };
 
-RotaryEncoder encoder(ENCODER_A, ENCODER_B, CC_Encoder, 1, 1, NORMAL_ENCODER, TWOS_COMPLEMENT);
+#define ENCODER_MULTIPLICATION 1
+RotaryEncoder encoder1(ENCODER_A, ENCODER_B, CC_ENCODER_1, MAIN_CHANNEL, ENCODER_MULTIPLICATION, NORMAL_ENCODER, TWOS_COMPLEMENT);
 
 Bank bank(12);
 
@@ -66,4 +71,3 @@ void make_led_signal(uint8_t times) {
     delay(200);
   }
 }
-
